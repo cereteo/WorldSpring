@@ -29,10 +29,7 @@
 					<c:forEach items="${continents}" var="c">
 						<tr>
 								<td>
-								<form action="CountryServlet">
-									<input type="submit" name="selectedContinent" value="${c.continent}">
-								</form>		
-								
+									<a href="country/${c.continent}">${c.continent}</a>								
 								</td>					
 							<td>${c.totSurfaceArea}</td>
 							<td>${c.totPopulation}</td>
