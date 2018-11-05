@@ -17,10 +17,21 @@ public class CountryController {
 	@Autowired
 	private ICountryDao countryDao;
 	
-	@RequestMapping("/country/{code}")
-	public String continents(@PathVariable("code") String continent, ModelMap model) {
+	@RequestMapping("country/{code}")
+	public String countryByContinents(@PathVariable("code") String continent, ModelMap model) {
 		List<Country> country = countryDao.getAllCountryByContinent(continent);
 		model.addAttribute("country", country);
 		return "Country";
 	}
+	
+	public List<Country> allCountry(){
+		List<Country> country = countryDao.getAllCountry();
+		return country;
+	};
+	
+//	@RequestMapping("/country")
+//	public String moveCountry(String CodeTo, String CodeFrom){
+//		
+//		return "Country";
+//	};
 }

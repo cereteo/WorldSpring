@@ -1,20 +1,13 @@
 package it.objectmethod.worldspring.dao.impl;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
 
-import java.sql.PreparedStatement;
-
-import it.objectmethod.worldspring.config.ConnectionFactory;
 import it.objectmethod.worldspring.dao.ICountryDao;
-import it.objectmethod.worldspring.model.Continents;
+import it.objectmethod.worldspring.model.City;
 import it.objectmethod.worldspring.model.Country;
 
 public class CountryDaoImpl extends NamedParameterJdbcDaoSupport implements ICountryDao{
@@ -22,7 +15,7 @@ public class CountryDaoImpl extends NamedParameterJdbcDaoSupport implements ICou
 	@Override
 	public List<Country> getAllCountryByContinent(String continent) {
 		
-		String sql = "SELECT Name, SurfaceArea, Population, Code FROM world.country where Continent = :continent";
+		String sql = "SELECT Name, SurfaceArea, Population, Code countryCode FROM world.country where Continent = :continent";
 		BeanPropertyRowMapper<Country> rm = new BeanPropertyRowMapper<Country>(Country.class);
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("continent", continent);
@@ -31,55 +24,22 @@ public class CountryDaoImpl extends NamedParameterJdbcDaoSupport implements ICou
 	}
 
 	public List<Country> getAllCountry() {
-//		Connection conn = ConnectionFactory.getConnection();
-//		PreparedStatement stmt = null;
-//		List<Country> ret = new ArrayList<Country>();
-//		try{
-//			String sql = "SELECT Name, SurfaceArea, Population, Code FROM world.country";
-//			stmt = conn.prepareStatement(sql);
-//			
-//			ResultSet rs = stmt.executeQuery();
-//
-//			while(rs.next()){
-//
-//				Country c = new Country();
-//				c.setName(rs.getString("Name"));
-//				c.setSurfaceArea(Double.parseDouble(rs.getString("SurfaceArea")));
-//				c.setPopulation(Integer.parseInt(rs.getString("Population")));
-//				c.setCountryCode(rs.getString("Code"));
-//				ret.add(c);
-//				
-//			}
-//			
-//			rs.close();
-//			stmt.close();
-//			conn.close();
-//			
-//		}catch(SQLException se){
-//			se.printStackTrace();
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}finally{
-//			try{
-//				if(stmt!=null)
-//					stmt.close();
-//			}catch(SQLException se2){
-//				se2.printStackTrace();
-//			}
-//			try{
-//
-//				if(conn!=null) {
-//					conn.close();
-//				}
-//
-//			}catch(SQLException se){
-//				se.printStackTrace();
-//			}
-//		}
-//
-		return null;
+		String sql = "SELECT Name, SurfaceArea, Population, Code FROM world.country";
+		BeanPropertyRowMapper<Country> rm = new BeanPropertyRowMapper<Country>(Country.class);
+		List<Country> country = getJdbcTemplate().query(sql, rm);
+		return country;
 	};
-//	
+
+	public String getCountryCodeByCity(String id) {
+		String sql = "select CountryCode from world.city c\n" + 
+				"where ID = :id";
+		BeanPropertyRowMapper<Country> rm = new BeanPropertyRowMapper<Country>(Country.class);
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("id", id);
+		Country country = getNamedParameterJdbcTemplate().queryForObject(sql, params, rm);
+		return country.getCountryCode();
+	}
+	
 	public List<Country> MoveCountry(String CodeTo, String CodeFrom) {
 //		Connection conn = ConnectionFactory.getConnection();
 //		PreparedStatement stmt = null;

@@ -22,13 +22,7 @@
 			<tbody>
 					<c:forEach items="${country}" var="c">
 						<tr>
-								<td>
-								<form action="CitiesServlet">
-									<input type="hidden" name="selectedCountry" value="${c.countryCode}">
-									<input type="submit" value="${c.name}">
-								</form>		
-								
-								</td>					
+							<td><a href="../cities/${c.countryCode}">${c.name}</a></td>					
 							<td>${c.surfaceArea}</td>
 							<td>${c.population}</td>
 						</tr>
